@@ -86,17 +86,10 @@
                 width: 100%;
                 margin: 0;
                 padding: 0;
-                /* Remove Flexbox layout for vertical stacking */
-                /* display: flex; Removed */
-                /* flex-wrap: wrap; Removed */
-                /* justify-content: space-around; Removed */
-                /* align-items: flex-start; Removed */
             }
              .bingo-card-instance {
                  visibility: visible;
                  width: 95%; /* Use most of the page width */
-                 /* display: inline-block; Removed */
-                 /* vertical-align: top; Removed */
                  margin-left: auto; /* Center the card horizontally */
                  margin-right: auto;
                  padding: 0.5cm; /* Padding inside the card */
@@ -105,16 +98,15 @@
                  border-radius: 0;
                  page-break-inside: avoid; /* Try to keep card content together */
                  box-sizing: border-box;
-                 margin-bottom: 1.5cm; /* Space between top and bottom card */
-                 /* Height will be automatic based on content */
+                 margin-bottom: 0.5cm; /* Space between top and bottom card */
              }
               /* Add page break after every second card */
              .bingo-card-instance:nth-child(2n) {
                   page-break-after: always; /* Break page after the second card */
+                  margin-bottom: 0; /* No margin below the second card when page breaks after */
              }
-             /* Ensure the last element doesn't cause an extra blank page */
-             /* Also remove bottom margin for the very last card on a page */
-             .bingo-card-instance:last-child, .bingo-card-instance:nth-child(2n) {
+             /* Remove bottom margin for the very last card overall */
+             .bingo-card-instance:last-child {
                   margin-bottom: 0;
              }
               /* If the last card is odd, ensure no page break after it */
@@ -125,36 +117,39 @@
 
              .bingo-card-instance h4 { /* Title style for print */
                  margin-top: 0;
-                 font-size: 12pt; /* Slightly larger title */
-                 margin-bottom: 0.4rem;
+                 font-size: 11pt; /* *** REDUCED title font size slightly *** */
+                 margin-bottom: 0.3rem; /* *** REDUCED margin below title *** */
              }
              .win-conditions { /* Win conditions style for print */
-                 font-size: 8pt; /* Slightly larger */
-                 margin-bottom: 0.6rem;
+                 font-size: 7pt; /* *** REDUCED font size *** */
+                 margin-bottom: 0.4rem; /* *** REDUCED margin below conditions *** */
              }
              .win-conditions input[type="checkbox"] { /* Ensure checkboxes print */
                  appearance: auto;
                  border: 1px solid #333 !important;
                  vertical-align: middle;
-                 width: 8pt;
-                 height: 8pt;
+                 width: 7pt; /* Match font size */
+                 height: 7pt;
              }
 
              .bingo-grid {
                 border-collapse: collapse;
                  width: 100%;
             }
+             /* Style for TD and TH cells in print */
              .bingo-grid th, .bingo-grid td {
                 border: 1px solid black !important;
-                padding: 4px; /* Slightly more padding */
-                font-size: 8pt; /* Slightly larger font */
+                padding: 2px 4px; /* *** REDUCED top/bottom padding *** */
+                font-size: 7pt; /* *** REDUCED font size *** */
                 height: auto; /* Auto height */
                 visibility: visible;
                  word-wrap: break-word;
             }
+             /* Specific style for TH cells in print */
             .bingo-grid th {
                 background-color: #e5e7eb !important;
-                font-size: 10pt; /* Header font size */
+                font-size: 9pt; /* *** REDUCED Header font size *** */
+                padding: 3px 4px; /* Slightly more vertical padding for header */
             }
              /* Hide non-essential elements during print */
              #main-container > *:not(#bingo-cards-output) {
