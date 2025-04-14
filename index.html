@@ -68,7 +68,7 @@
         @media print {
             @page {
                 size: A4; /* Specify A4 paper size */
-                margin: 0.5in; /* Adjust margins as needed */
+                margin: 0.75in; /* Adjust margins if needed */
             }
             body {
                 background-color: white;
@@ -76,54 +76,68 @@
                 color-adjust: exact;
             }
             body * {
-                visibility: hidden;
+                visibility: hidden; /* Hide everything not explicitly shown */
             }
             #bingo-cards-output, #bingo-cards-output * {
-                visibility: visible;
+                visibility: visible; /* Show the output container and its children */
             }
             #bingo-cards-output {
-                position: static; /* Use static positioning for print flow */
+                position: static;
                 width: 100%;
                 margin: 0;
                 padding: 0;
+                /* Remove Flexbox layout for vertical stacking */
+                /* display: flex; Removed */
+                /* flex-wrap: wrap; Removed */
+                /* justify-content: space-around; Removed */
+                /* align-items: flex-start; Removed */
             }
              .bingo-card-instance {
                  visibility: visible;
-                 width: 48%; /* Aim for slightly less than half width */
-                 display: inline-block; /* Place cards side-by-side */
-                 vertical-align: top; /* Align tops */
-                 margin: 1%; /* Small margin for gutter */
-                 padding: 1cm; /* Padding inside the card border for print */
-                 border: 1px solid #999; /* Lighter border for print */
+                 width: 95%; /* Use most of the page width */
+                 /* display: inline-block; Removed */
+                 /* vertical-align: top; Removed */
+                 margin-left: auto; /* Center the card horizontally */
+                 margin-right: auto;
+                 padding: 0.5cm; /* Padding inside the card */
+                 border: 1px solid #999;
                  box-shadow: none;
                  border-radius: 0;
                  page-break-inside: avoid; /* Try to keep card content together */
-                 box-sizing: border-box; /* Include padding and border in width calculation */
+                 box-sizing: border-box;
+                 margin-bottom: 1.5cm; /* Space between top and bottom card */
+                 /* Height will be automatic based on content */
              }
               /* Add page break after every second card */
              .bingo-card-instance:nth-child(2n) {
-                  page-break-after: always;
+                  page-break-after: always; /* Break page after the second card */
              }
              /* Ensure the last element doesn't cause an extra blank page */
-             .bingo-card-instance:last-child {
-                  page-break-after: auto;
+             /* Also remove bottom margin for the very last card on a page */
+             .bingo-card-instance:last-child, .bingo-card-instance:nth-child(2n) {
+                  margin-bottom: 0;
              }
+              /* If the last card is odd, ensure no page break after it */
+             .bingo-card-instance:nth-child(odd):last-child {
+                 page-break-after: auto;
+             }
+
 
              .bingo-card-instance h4 { /* Title style for print */
                  margin-top: 0;
-                 font-size: 11pt; /* Adjust size */
-                 margin-bottom: 0.3rem; /* Adjust spacing */
+                 font-size: 12pt; /* Slightly larger title */
+                 margin-bottom: 0.4rem;
              }
              .win-conditions { /* Win conditions style for print */
-                 font-size: 7pt; /* Smaller font for print */
-                 margin-bottom: 0.5rem;
+                 font-size: 8pt; /* Slightly larger */
+                 margin-bottom: 0.6rem;
              }
              .win-conditions input[type="checkbox"] { /* Ensure checkboxes print */
-                 appearance: auto; /* Use browser default appearance for printing */
-                 border: 1px solid #333 !important; /* Ensure border prints */
+                 appearance: auto;
+                 border: 1px solid #333 !important;
                  vertical-align: middle;
-                 width: 7pt; /* Match font size */
-                 height: 7pt;
+                 width: 8pt;
+                 height: 8pt;
              }
 
              .bingo-grid {
@@ -132,14 +146,15 @@
             }
              .bingo-grid th, .bingo-grid td {
                 border: 1px solid black !important;
-                padding: 3px; /* Reduced padding */
-                font-size: 7pt; /* Reduced font size */
-                height: auto;
+                padding: 4px; /* Slightly more padding */
+                font-size: 8pt; /* Slightly larger font */
+                height: auto; /* Auto height */
                 visibility: visible;
-                 word-wrap: break-word; /* Ensure long words wrap */
+                 word-wrap: break-word;
             }
             .bingo-grid th {
                 background-color: #e5e7eb !important;
+                font-size: 10pt; /* Header font size */
             }
              /* Hide non-essential elements during print */
              #main-container > *:not(#bingo-cards-output) {
@@ -435,11 +450,6 @@
                 spanLine.appendChild(cbLine);
                 spanLine.appendChild(document.createTextNode(' A Line'));
                 winConditionsDiv.appendChild(spanLine);
-
-                 // -- Full House (REMOVED) --
-                 // const spanFull = document.createElement('span');
-                 // spanFull.textContent = 'Full House';
-                 // winConditionsDiv.appendChild(spanFull);
 
                 cardInstanceDiv.appendChild(winConditionsDiv); // Add win conditions below title
 
