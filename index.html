@@ -18,87 +18,128 @@
             border: 1px solid #d1d5db; /* Gray border */
             text-align: center;
             vertical-align: middle;
-            height: 75px; /* Slightly smaller height for potentially more cards */
+            height: 75px;
             width: 20%; /* Equal width for 5 columns */
-            overflow: hidden; /* Hide overflow */
-            font-size: 0.75rem; /* Smaller font size for content */
-            padding: 4px; /* Padding within cells */
-            word-break: break-word; /* Break long words */
+            overflow: hidden;
+            font-size: 0.75rem; /* Base font size for content */
+            padding: 4px;
+            word-break: break-word;
         }
          .bingo-grid th {
             background-color: #e5e7eb; /* Light gray header */
             font-weight: bold;
             font-size: 1rem;
-            height: 40px; /* Specific height for header */
+            height: 40px;
          }
 
-        /* Styling for each card instance */
+        /* Styling for each card instance on screen */
         .bingo-card-instance {
-            margin-bottom: 2rem; /* Space between cards on screen */
-            border: 1px solid #ccc; /* Border around each card */
-            padding: 1rem; /* Padding inside card wrapper */
-            background-color: white; /* White background for card */
-            border-radius: 0.5rem; /* Rounded corners */
+            margin-bottom: 2rem;
+            border: 1px solid #ccc;
+            padding: 1rem;
+            background-color: white;
+            border-radius: 0.5rem;
         }
-         .bingo-card-instance h4 {
+         .bingo-card-instance h4 { /* Card Title */
              text-align: center;
-             font-size: 1.2rem; /* Slightly larger title */
+             font-size: 1.2rem;
              font-weight: 600;
-             margin-bottom: 0.8rem;
-             color: #374151; /* Darker gray text */
+             margin-bottom: 0.5rem; /* Reduced margin */
+             color: #374151;
          }
+         .win-conditions { /* Win conditions text styling */
+            text-align: center;
+            font-size: 0.7rem; /* Smaller font size */
+            color: #4b5563; /* Medium gray */
+            margin-bottom: 0.8rem;
+         }
+         .win-conditions span { /* Spacing between conditions */
+             margin: 0 0.5rem;
+         }
+         .win-conditions input[type="checkbox"] { /* Checkbox styling */
+             width: 0.8rem;
+             height: 0.8rem;
+             margin-right: 0.2rem;
+             vertical-align: middle; /* Align checkbox with text */
+         }
+
 
         /* Styles for printing */
         @media print {
+            @page {
+                size: A4; /* Specify A4 paper size */
+                margin: 0.5in; /* Adjust margins as needed */
+            }
             body {
-                background-color: white; /* Ensure white background for printing */
+                background-color: white;
+                -webkit-print-color-adjust: exact; /* Ensure accurate colors */
+                color-adjust: exact;
             }
             body * {
-                visibility: hidden; /* Hide everything by default */
+                visibility: hidden;
             }
             #bingo-cards-output, #bingo-cards-output * {
-                visibility: visible; /* Show only the bingo card container and its contents */
+                visibility: visible;
             }
             #bingo-cards-output {
-                position: absolute;
-                left: 0;
-                top: 0;
+                position: static; /* Use static positioning for print flow */
                 width: 100%;
                 margin: 0;
                 padding: 0;
             }
              .bingo-card-instance {
-                 visibility: visible; /* Ensure card instance is visible */
-                 page-break-after: always; /* Page break after each card */
-                 margin-bottom: 0; /* Remove screen margin */
-                 border: none; /* Remove screen border */
-                 padding: 0.5in; /* Add some padding for printing */
-                 box-shadow: none; /* Remove shadow */
+                 visibility: visible;
+                 width: 48%; /* Aim for slightly less than half width */
+                 display: inline-block; /* Place cards side-by-side */
+                 vertical-align: top; /* Align tops */
+                 margin: 1%; /* Small margin for gutter */
+                 padding: 1cm; /* Padding inside the card border for print */
+                 border: 1px solid #999; /* Lighter border for print */
+                 box-shadow: none;
                  border-radius: 0;
+                 page-break-inside: avoid; /* Try to keep card content together */
+                 box-sizing: border-box; /* Include padding and border in width calculation */
              }
+              /* Add page break after every second card */
+             .bingo-card-instance:nth-child(2n) {
+                  page-break-after: always;
+             }
+             /* Ensure the last element doesn't cause an extra blank page */
              .bingo-card-instance:last-child {
-                 page-break-after: auto; /* No page break after the last card */
+                  page-break-after: auto;
              }
-             .bingo-card-instance h4 {
-                 margin-top: 0; /* Adjust title margin for print */
-                 font-size: 14pt; /* Adjust title font size for print */
+
+             .bingo-card-instance h4 { /* Title style for print */
+                 margin-top: 0;
+                 font-size: 11pt; /* Adjust size */
+                 margin-bottom: 0.3rem; /* Adjust spacing */
              }
+             .win-conditions { /* Win conditions style for print */
+                 font-size: 7pt; /* Smaller font for print */
+                 margin-bottom: 0.5rem;
+             }
+             .win-conditions input[type="checkbox"] { /* Ensure checkboxes print */
+                 appearance: auto; /* Use browser default appearance for printing */
+                 border: 1px solid #333 !important; /* Ensure border prints */
+                 vertical-align: middle;
+                 width: 7pt; /* Match font size */
+                 height: 7pt;
+             }
+
              .bingo-grid {
-                 /* Ensure grid lines are visible when printing */
                 border-collapse: collapse;
-                 width: 100%; /* Ensure table takes full width within padding */
+                 width: 100%;
             }
              .bingo-grid th, .bingo-grid td {
-                border: 1px solid black !important; /* Add black borders for printing */
-                padding: 6px; /* Adjust padding as needed */
-                font-size: 9pt; /* Adjust font size for printing */
-                height: auto; /* Let height adjust for print */
-                visibility: visible; /* Ensure cells are visible */
+                border: 1px solid black !important;
+                padding: 3px; /* Reduced padding */
+                font-size: 7pt; /* Reduced font size */
+                height: auto;
+                visibility: visible;
+                 word-wrap: break-word; /* Ensure long words wrap */
             }
             .bingo-grid th {
-                background-color: #e5e7eb !important; /* Light gray header */
-                 -webkit-print-color-adjust: exact; /* Ensure background color prints in Chrome/Safari */
-                 color-adjust: exact; /* Ensure background color prints */
+                background-color: #e5e7eb !important;
             }
              /* Hide non-essential elements during print */
              #main-container > *:not(#bingo-cards-output) {
@@ -120,7 +161,6 @@
 
         <div id="input-section" class="mb-6 p-4 border border-gray-200 rounded-lg bg-gray-50">
             <h2 class="text-xl font-semibold mb-4 text-gray-700">1. Add Songs</h2>
-
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 pb-4 border-b border-gray-200">
                 <div>
                     <label for="song-title" class="block text-sm font-medium text-gray-600 mb-1">Song Title:</label>
@@ -137,7 +177,6 @@
                 </div>
             </div>
              <p id="input-error" class="text-red-500 text-sm mt-2 mb-4 hidden"></p>
-
              <div class="mt-4">
                  <h3 class="text-lg font-semibold mb-2 text-gray-700">Or Add Multiple Songs</h3>
                  <label for="bulk-songs-input" class="block text-sm font-medium text-gray-600 mb-1">
@@ -185,7 +224,6 @@
              <p id="generate-error" class="text-red-500 text-sm mt-2 text-center hidden"></p>
         </div>
 
-
         <div id="bingo-cards-output" class="mt-8">
              <div id="bingo-placeholder" class="p-10 text-center text-gray-500 bg-white border border-gray-200 rounded-lg">
                  Your bingo cards will appear here once generated.
@@ -203,7 +241,7 @@
         const printCardsBtn = document.getElementById('print-cards-btn');
         const resetBtn = document.getElementById('reset-btn');
         const bingoCardsOutput = document.getElementById('bingo-cards-output');
-        const bingoPlaceholder = document.getElementById('bingo-placeholder');
+        let bingoPlaceholder = document.getElementById('bingo-placeholder'); // Use let as it might be removed/re-added
         const inputError = document.getElementById('input-error');
         const listError = document.getElementById('list-error');
         const generateError = document.getElementById('generate-error');
@@ -212,70 +250,59 @@
         const addBulkBtn = document.getElementById('add-bulk-btn');
         const bulkStatus = document.getElementById('bulk-status');
         const cardCountInput = document.getElementById('card-count-input');
-        const customTitleInput = document.getElementById('custom-title-input'); // New input for custom title
-
+        const customTitleInput = document.getElementById('custom-title-input');
 
         // --- State ---
-        let songs = []; // Array to hold song objects { title: '...', artist: '...' }
+        let songs = [];
         const REQUIRED_SONGS = 25;
         const BULK_SEPARATOR = ' - ';
-        const DEFAULT_CARD_TITLE = 'Music Bingo'; // Default title if input is empty
+        const DEFAULT_CARD_TITLE = 'Music Bingo';
 
-        // --- Functions ---
-
-        function showInputError(message) {
-            inputError.textContent = message;
-            inputError.classList.remove('hidden');
-        }
-        function hideInputError() {
-            inputError.classList.add('hidden');
-            inputError.textContent = '';
-        }
-        function showListError(message) {
-            listError.textContent = message;
-            listError.classList.remove('hidden');
-        }
-        function hideListError() {
-            listError.classList.add('hidden');
-            listError.textContent = '';
-        }
-         function showGenerateError(message) {
-            generateError.textContent = message;
-            generateError.classList.remove('hidden');
-        }
-        function hideGenerateError() {
-            generateError.classList.add('hidden');
-            generateError.textContent = '';
-        }
-        function clearBulkStatus() {
-            bulkStatus.textContent = '';
-            bulkStatus.classList.remove('text-red-500', 'text-green-600');
-        }
+        // --- Utility Functions ---
+        function showInputError(message) { inputError.textContent = message; inputError.classList.remove('hidden'); }
+        function hideInputError() { inputError.classList.add('hidden'); inputError.textContent = ''; }
+        function showListError(message) { listError.textContent = message; listError.classList.remove('hidden'); }
+        function hideListError() { listError.classList.add('hidden'); listError.textContent = ''; }
+        function showGenerateError(message) { generateError.textContent = message; generateError.classList.remove('hidden'); }
+        function hideGenerateError() { generateError.classList.add('hidden'); generateError.textContent = ''; }
+        function clearBulkStatus() { bulkStatus.textContent = ''; bulkStatus.classList.remove('text-red-500', 'text-green-600'); }
 
         function songExists(title, artist) {
              const lowerTitle = title.toLowerCase();
              const lowerArtist = artist.toLowerCase();
-             return songs.some(song =>
-                 song.title.toLowerCase() === lowerTitle &&
-                 song.artist.toLowerCase() === lowerArtist
-             );
+             return songs.some(song => song.title.toLowerCase() === lowerTitle && song.artist.toLowerCase() === lowerArtist);
         }
 
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        // --- Core Functions ---
+
+        /**
+         * Updates the displayed list of songs and checks generation readiness.
+         */
         function displaySongList() {
-            songListUl.innerHTML = '';
-            const noSongsDiv = document.getElementById('no-songs-message');
+            songListUl.innerHTML = ''; // Clear list first
+            const noSongsDiv = document.getElementById('no-songs-message'); // Check if message exists
+
             if (songs.length === 0) {
-                if (!noSongsDiv) {
+                 // Ensure the 'no songs' message is present and visible
+                 if (!noSongsDiv) {
                      const newNoSongsDiv = document.createElement('div');
                      newNoSongsDiv.id = 'no-songs-message';
                      newNoSongsDiv.textContent = 'No songs added yet.';
                      songListUl.appendChild(newNoSongsDiv);
-                } else {
+                 } else {
                      noSongsDiv.classList.remove('hidden');
-                }
+                 }
             } else {
+                 // Hide 'no songs' message if it exists
                  if (noSongsDiv) noSongsDiv.classList.add('hidden');
-
+                 // Add each song as a list item
                  songs.forEach((song, index) => {
                     const li = document.createElement('li');
                     li.textContent = `${index + 1}. ${song.title} - ${song.artist}`;
@@ -283,193 +310,174 @@
                     songListUl.appendChild(li);
                 });
             }
+            // Update song count display
             songCountSpan.textContent = songs.length;
-
             document.querySelector('#song-list-section h3').innerHTML = `2. Check Song List (<span id="song-count">${songs.length}</span> / ${REQUIRED_SONGS} minimum)`;
 
+            // Enable/disable generate button and show/hide list error message
             if (songs.length >= REQUIRED_SONGS) {
                 generateCardsBtn.disabled = false;
                 hideListError();
             } else {
                 generateCardsBtn.disabled = true;
-                 if (songs.length > 0) {
+                 if (songs.length > 0) { // Show error only if some songs are added but not enough
                      showListError(`You need at least ${REQUIRED_SONGS} songs to generate cards.`);
-                 } else {
+                 } else { // Hide error if the list is simply empty
                      hideListError();
                  }
             }
         }
 
+        /**
+         * Adds a single song from the input fields.
+         */
         function addSong() {
             const title = songTitleInput.value.trim();
             const artist = songArtistInput.value.trim();
-             hideInputError();
-             clearBulkStatus();
-             hideGenerateError();
+             hideInputError(); clearBulkStatus(); hideGenerateError(); // Clear errors
 
-            if (!title || !artist) {
-                showInputError('Please enter both song title and artist.');
-                return;
-            }
-            if (songExists(title, artist)) {
-                 showInputError(`"${title} - ${artist}" is already in the list.`);
-                 return;
-            }
+            if (!title || !artist) { showInputError('Please enter both song title and artist.'); return; }
+            if (songExists(title, artist)) { showInputError(`"${title} - ${artist}" is already in the list.`); return; }
+
             songs.push({ title, artist });
-            displaySongList();
-            songTitleInput.value = '';
-            songArtistInput.value = '';
-            songTitleInput.focus();
+            displaySongList(); // Update UI
+            songTitleInput.value = ''; songArtistInput.value = ''; // Clear inputs
+            songTitleInput.focus(); // Focus back on title input
         }
 
+        /**
+         * Adds multiple songs from the bulk textarea.
+         */
         function addBulkSongs() {
             const bulkText = bulkSongsInput.value.trim();
             const lines = bulkText.split('\n');
-            let addedCount = 0;
-            let errorCount = 0;
-            let duplicateCount = 0;
-            hideInputError();
-            clearBulkStatus();
-            hideGenerateError();
+            let addedCount = 0, errorCount = 0, duplicateCount = 0;
+            hideInputError(); clearBulkStatus(); hideGenerateError(); // Clear errors
 
-            if (!bulkText) {
-                bulkStatus.textContent = 'Text area is empty.';
-                bulkStatus.classList.add('text-red-500');
-                return;
-            }
+            if (!bulkText) { bulkStatus.textContent = 'Text area is empty.'; bulkStatus.classList.add('text-red-500'); return; }
 
             lines.forEach(line => {
                 const trimmedLine = line.trim();
-                if (!trimmedLine) return;
+                if (!trimmedLine) return; // Skip empty lines
                 const separatorIndex = trimmedLine.lastIndexOf(BULK_SEPARATOR);
-                if (separatorIndex === -1) {
-                    console.warn(`Skipping line (missing separator "${BULK_SEPARATOR}"): ${trimmedLine}`);
-                    errorCount++;
-                    return;
-                }
+                if (separatorIndex === -1) { console.warn(`Skipping line (missing separator "${BULK_SEPARATOR}"): ${trimmedLine}`); errorCount++; return; }
                 const title = trimmedLine.substring(0, separatorIndex).trim();
                 const artist = trimmedLine.substring(separatorIndex + BULK_SEPARATOR.length).trim();
-                if (!title || !artist) {
-                     console.warn(`Skipping line (empty title or artist): ${trimmedLine}`);
-                    errorCount++;
-                    return;
-                }
-                if (songExists(title, artist)) {
-                    duplicateCount++;
-                } else {
-                    songs.push({ title, artist });
-                    addedCount++;
-                }
+                if (!title || !artist) { console.warn(`Skipping line (empty title or artist): ${trimmedLine}`); errorCount++; return; }
+                if (songExists(title, artist)) { duplicateCount++; }
+                else { songs.push({ title, artist }); addedCount++; }
             });
 
-            if (addedCount > 0) {
-                displaySongList();
-            }
+            if (addedCount > 0) { displaySongList(); } // Update UI if songs were added
 
+            // Display status message
             let statusMessage = `Processed list: Added ${addedCount} songs.`;
             if (duplicateCount > 0) statusMessage += ` Skipped ${duplicateCount} duplicates.`;
             if (errorCount > 0) statusMessage += ` Encountered ${errorCount} formatting errors (check console).`;
             bulkStatus.textContent = statusMessage;
             if (errorCount > 0) bulkStatus.classList.add('text-red-500');
             else if (addedCount > 0) bulkStatus.classList.add('text-green-600');
-            bulkSongsInput.value = '';
+            bulkSongsInput.value = ''; // Clear textarea
         }
 
-        function shuffleArray(array) {
-            // Fisher-Yates shuffle algorithm
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-        }
 
         /**
-         * Generates and displays the requested number of bingo cards with a custom title.
+         * Generates and displays the requested number of bingo cards.
          */
         function generateCards() {
-            hideListError();
-            hideGenerateError();
-            clearBulkStatus();
+            hideListError(); hideGenerateError(); clearBulkStatus(); // Clear errors
 
             // --- Validate Inputs ---
-            if (songs.length < REQUIRED_SONGS) {
-                 showGenerateError(`You need at least ${REQUIRED_SONGS} songs to generate cards.`);
-                return;
-            }
+            if (songs.length < REQUIRED_SONGS) { showGenerateError(`You need at least ${REQUIRED_SONGS} songs.`); return; }
             const numCards = parseInt(cardCountInput.value, 10);
-            if (isNaN(numCards) || numCards < 1) {
-                 showGenerateError("Please enter a valid number of cards (1 or more).");
-                 cardCountInput.value = '1';
-                 return;
-            }
-            // Get the custom title, use default if empty
+            if (isNaN(numCards) || numCards < 1) { showGenerateError("Please enter a valid number of cards (1 or more)."); cardCountInput.value = '1'; return; }
             const customTitle = customTitleInput.value.trim() || DEFAULT_CARD_TITLE;
 
-
             // --- Clear Previous Output ---
-            bingoCardsOutput.innerHTML = '';
-            bingoPlaceholder.classList.add('hidden');
+            bingoCardsOutput.innerHTML = ''; // Clear placeholder and previous cards
+            bingoPlaceholder = null; // Remove reference to old placeholder
 
             // --- Generate Each Card ---
             for (let cardNum = 1; cardNum <= numCards; cardNum++) {
-                // 1. Shuffle songs for each card
+                // 1. Shuffle songs
                 const shuffledSongs = [...songs];
                 shuffleArray(shuffledSongs);
-
-                // 2. Select songs for this card
                 const cardSongs = shuffledSongs.slice(0, REQUIRED_SONGS);
-                 if (cardSongs.length < REQUIRED_SONGS) {
-                     console.error(`Error generating card ${cardNum}: Not enough unique songs selected.`);
-                     showGenerateError(`Error generating card ${cardNum}. Check song list.`);
-                     continue;
-                 }
+                 if (cardSongs.length < REQUIRED_SONGS) { console.error(`Error generating card ${cardNum}: Not enough songs.`); showGenerateError(`Error generating card ${cardNum}.`); continue; }
 
-                // 3. Create HTML structure
+                // 2. Create Card Structure (Div, Title, Win Conditions, Table)
                 const cardInstanceDiv = document.createElement('div');
                 cardInstanceDiv.classList.add('bingo-card-instance');
 
+                // Card Title
                 const cardTitleElement = document.createElement('h4');
-                // Use the custom title here, without card number
                 cardTitleElement.textContent = customTitle;
                 cardInstanceDiv.appendChild(cardTitleElement);
 
+                // Win Conditions Text & Checkboxes
+                const winConditionsDiv = document.createElement('div');
+                winConditionsDiv.classList.add('win-conditions'); // Add class for styling
+
+                // -- Four Corners --
+                const spanCorners = document.createElement('span');
+                const cbCorners = document.createElement('input');
+                cbCorners.type = 'checkbox';
+                cbCorners.classList.add('win-checkbox'); // Class for potential styling
+                spanCorners.appendChild(cbCorners);
+                spanCorners.appendChild(document.createTextNode(' Four Corners'));
+                winConditionsDiv.appendChild(spanCorners);
+
+                 // -- A Line --
+                const spanLine = document.createElement('span');
+                const cbLine = document.createElement('input');
+                cbLine.type = 'checkbox';
+                cbLine.classList.add('win-checkbox');
+                spanLine.appendChild(cbLine);
+                spanLine.appendChild(document.createTextNode(' A Line'));
+                winConditionsDiv.appendChild(spanLine);
+
+                 // -- Full House (REMOVED) --
+                 // const spanFull = document.createElement('span');
+                 // spanFull.textContent = 'Full House';
+                 // winConditionsDiv.appendChild(spanFull);
+
+                cardInstanceDiv.appendChild(winConditionsDiv); // Add win conditions below title
+
+                // Bingo Grid Table
                 const table = document.createElement('table');
                 table.classList.add('bingo-grid', 'w-full', 'border-collapse');
                 const thead = table.createTHead();
                 const tbody = table.createTBody();
                 cardInstanceDiv.appendChild(table);
 
-                // Create header row
+                // Header Row (BINGO)
                 const headerRow = thead.insertRow();
-                ['B', 'I', 'N', 'G', 'O'].forEach(letter => {
-                    const th = document.createElement('th');
-                    th.textContent = letter;
-                    headerRow.appendChild(th);
-                });
+                ['B', 'I', 'N', 'G', 'O'].forEach(letter => { const th = document.createElement('th'); th.textContent = letter; headerRow.appendChild(th); });
 
-                // Create grid cells
+                // Grid Cells (Songs)
                 let songIndex = 0;
                 for (let i = 0; i < 5; i++) {
                     const row = tbody.insertRow();
                     for (let j = 0; j < 5; j++) {
                         const cell = row.insertCell();
                         const song = cardSongs[songIndex++];
+                        // Add title and artist, separated by line break
                         cell.innerHTML = `<span class="font-medium">${song.title}</span><br><span class="text-xs text-gray-500">${song.artist}</span>`;
                     }
                 }
 
-                // 4. Append card to output
+                // 3. Append the completed card to the output area
                 bingoCardsOutput.appendChild(cardInstanceDiv);
             }
 
             // --- Update UI ---
             if (bingoCardsOutput.children.length > 0) {
-                 printCardsBtn.classList.remove('hidden');
+                 printCardsBtn.classList.remove('hidden'); // Show print button if cards were generated
             } else {
-                 bingoPlaceholder.classList.remove('hidden');
-                 bingoCardsOutput.appendChild(bingoPlaceholder);
+                 // If somehow no cards were generated, re-add placeholder
+                 ensurePlaceholderExists(true);
             }
-            generateCardsBtn.disabled = true;
+            generateCardsBtn.disabled = true; // Disable generate button
         }
 
         /**
@@ -479,36 +487,47 @@
             window.print();
         }
 
+         /**
+         * Ensures the placeholder div exists and is shown/hidden.
+         * @param {boolean} show - If true, show the placeholder; otherwise, hide it.
+         */
+         function ensurePlaceholderExists(show = true) {
+             bingoPlaceholder = document.getElementById('bingo-placeholder');
+             if (!bingoPlaceholder) {
+                 bingoPlaceholder = document.createElement('div');
+                 bingoPlaceholder.id = 'bingo-placeholder';
+                 bingoPlaceholder.className = 'p-10 text-center text-gray-500 bg-white border border-gray-200 rounded-lg';
+                 bingoPlaceholder.textContent = 'Your bingo cards will appear here once generated.';
+                 // Prepend it so it's the first child if the output area is empty
+                 bingoCardsOutput.insertBefore(bingoPlaceholder, bingoCardsOutput.firstChild);
+             }
+             bingoPlaceholder.classList.toggle('hidden', !show);
+         }
+
+
         /**
-         * Resets the application state.
+         * Resets the application state to initial values.
          */
         function resetApp() {
-            songs = [];
+            songs = []; // Clear song list
+            // Clear input fields
             songTitleInput.value = '';
             songArtistInput.value = '';
             bulkSongsInput.value = '';
             cardCountInput.value = '1';
-            customTitleInput.value = ''; // Clear custom title input
+            customTitleInput.value = '';
+            // Clear errors and status messages
             hideInputError();
             hideListError();
             hideGenerateError();
             clearBulkStatus();
-            displaySongList();
+            // Reset UI elements
+            displaySongList(); // Update song list display (will show 'no songs')
             bingoCardsOutput.innerHTML = ''; // Clear generated cards
-             // Ensure placeholder exists before trying to show it
-             let placeholder = document.getElementById('bingo-placeholder');
-             if (!placeholder) {
-                 placeholder = document.createElement('div');
-                 placeholder.id = 'bingo-placeholder';
-                 placeholder.className = 'p-10 text-center text-gray-500 bg-white border border-gray-200 rounded-lg';
-                 placeholder.textContent = 'Your bingo cards will appear here once generated.';
-                 bingoCardsOutput.appendChild(placeholder);
-             }
-             placeholder.classList.remove('hidden');
-
-            printCardsBtn.classList.add('hidden');
-            generateCardsBtn.disabled = true;
-            songTitleInput.focus();
+            ensurePlaceholderExists(true); // Show the placeholder
+            printCardsBtn.classList.add('hidden'); // Hide print button
+            generateCardsBtn.disabled = true; // Disable generate button
+            songTitleInput.focus(); // Focus on the first input
         }
 
 
@@ -522,16 +541,11 @@
         resetBtn.addEventListener('click', resetApp);
 
         // --- Initial Setup ---
-        displaySongList();
-        songTitleInput.focus();
-         // Ensure placeholder is present on initial load
-         if (!document.getElementById('bingo-placeholder')) {
-             const initialPlaceholder = document.createElement('div');
-             initialPlaceholder.id = 'bingo-placeholder';
-             initialPlaceholder.className = 'p-10 text-center text-gray-500 bg-white border border-gray-200 rounded-lg';
-             initialPlaceholder.textContent = 'Your bingo cards will appear here once generated.';
-             bingoCardsOutput.appendChild(initialPlaceholder);
-         }
+        document.addEventListener('DOMContentLoaded', () => {
+            displaySongList(); // Display initial list state
+            songTitleInput.focus(); // Set initial focus
+            ensurePlaceholderExists(true); // Make sure placeholder is shown initially
+        });
 
     </script>
 
