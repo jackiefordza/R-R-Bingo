@@ -10,10 +10,10 @@
         /* Custom styles */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6; /* Light gray background */
+            background-color: #f1f5f9; /* Changed to slate-100 */
         }
 
-        /* General grid styling */
+        /* General grid styling (Screen) */
         .bingo-grid th, .bingo-grid td {
             border: 1px solid #d1d5db; /* Gray border */
             text-align: center;
@@ -26,7 +26,9 @@
             word-break: break-word;
         }
          .bingo-grid th {
-            background-color: #e5e7eb; /* Light gray header */
+            /* Added background and text color for screen */
+            background-color: #e0e7ff; /* indigo-100 */
+            color: #3730a3; /* indigo-800 */
             font-weight: bold;
             font-size: 1rem;
             height: 40px;
@@ -39,17 +41,18 @@
             padding: 1rem;
             background-color: white;
             border-radius: 0.5rem;
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1); /* Subtle shadow */
         }
          .bingo-card-instance h4 { /* Card Title */
              text-align: center;
              font-size: 1.2rem;
              font-weight: 600;
-             margin-bottom: 0.5rem; /* Reduced margin */
-             color: #374151;
+             margin-bottom: 0.5rem;
+             color: #3730a3; /* indigo-800 */
          }
          .win-conditions { /* Win conditions text styling */
             text-align: center;
-            font-size: 0.7rem; /* Smaller font size */
+            font-size: 0.7rem;
             color: #4b5563; /* Medium gray */
             margin-bottom: 0.8rem;
          }
@@ -60,15 +63,25 @@
              width: 0.8rem;
              height: 0.8rem;
              margin-right: 0.2rem;
-             vertical-align: middle; /* Align checkbox with text */
+             vertical-align: middle;
+             color: #4f46e5; /* Indigo */
+             border-color: #a5b4fc; /* Indigo lighter */
+             border-radius: 0.125rem;
+         }
+         .win-conditions input[type="checkbox"]:focus {
+              box-shadow: none; /* Remove default focus */
+              outline: 2px solid transparent;
+              outline-offset: 2px;
+              --tw-ring-color: #6366f1; /* Indigo */
+              box-shadow: 0 0 0 2px #fff, 0 0 0 calc(2px + 2px) var(--tw-ring-color);
          }
 
 
         /* Styles for printing */
         @media print {
             @page {
-                size: A4; /* Specify A4 paper size */
-                margin: 0.75in; /* Adjust margins if needed */
+                size: A4 landscape; /* SET TO LANDSCAPE */
+                margin: 0.5in; /* Adjust margins if needed */
             }
             body {
                 background-color: white;
@@ -86,24 +99,28 @@
                 width: 100%;
                 margin: 0;
                 padding: 0;
+                /* Use Flexbox for side-by-side layout */
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-around; /* Distribute space */
+                align-items: flex-start;
             }
              .bingo-card-instance {
                  visibility: visible;
-                 width: 95%; /* Use most of the page width */
-                 margin-left: auto; /* Center the card horizontally */
-                 margin-right: auto;
-                 padding: 0.5cm; /* Padding inside the card */
+                 width: 48%; /* Back to ~half width for side-by-side */
+                 margin: 0; /* Let flexbox handle spacing */
+                 margin-bottom: 1cm; /* Space below each row of cards */
+                 padding: 0.75cm; /* Slightly more padding */
                  border: 1px solid #999;
                  box-shadow: none;
                  border-radius: 0;
                  page-break-inside: avoid; /* Try to keep card content together */
                  box-sizing: border-box;
-                 margin-bottom: 0.5cm; /* Space between top and bottom card */
              }
-              /* Add page break after every second card */
+              /* Add page break after every second card (each row) */
              .bingo-card-instance:nth-child(2n) {
-                  page-break-after: always; /* Break page after the second card */
-                  margin-bottom: 0; /* No margin below the second card when page breaks after */
+                  page-break-after: always;
+                  margin-bottom: 0; /* No margin if breaking after */
              }
              /* Remove bottom margin for the very last card overall */
              .bingo-card-instance:last-child {
@@ -117,19 +134,22 @@
 
              .bingo-card-instance h4 { /* Title style for print */
                  margin-top: 0;
-                 font-size: 11pt; /* *** REDUCED title font size slightly *** */
-                 margin-bottom: 0.3rem; /* *** REDUCED margin below title *** */
+                 font-size: 12pt;
+                 margin-bottom: 0.4rem;
+                 color: black !important; /* Ensure title prints black */
              }
              .win-conditions { /* Win conditions style for print */
-                 font-size: 7pt; /* *** REDUCED font size *** */
-                 margin-bottom: 0.4rem; /* *** REDUCED margin below conditions *** */
+                 font-size: 8pt;
+                 margin-bottom: 0.5rem;
+                 color: black !important; /* Ensure text prints black */
              }
              .win-conditions input[type="checkbox"] { /* Ensure checkboxes print */
                  appearance: auto;
                  border: 1px solid #333 !important;
                  vertical-align: middle;
-                 width: 7pt; /* Match font size */
-                 height: 7pt;
+                 width: 8pt;
+                 height: 8pt;
+                 color: black !important; /* Ensure checkbox border prints black */
              }
 
              .bingo-grid {
@@ -139,17 +159,19 @@
              /* Style for TD and TH cells in print */
              .bingo-grid th, .bingo-grid td {
                 border: 1px solid black !important;
-                padding: 2px 4px; /* *** REDUCED top/bottom padding *** */
-                font-size: 7pt; /* *** REDUCED font size *** */
+                padding: 4px;
+                font-size: 8pt;
                 height: auto; /* Auto height */
                 visibility: visible;
                  word-wrap: break-word;
+                 color: black !important; /* Ensure text prints black */
             }
              /* Specific style for TH cells in print */
             .bingo-grid th {
-                background-color: #e5e7eb !important;
-                font-size: 9pt; /* *** REDUCED Header font size *** */
-                padding: 3px 4px; /* Slightly more vertical padding for header */
+                background-color: #e5e7eb !important; /* Keep light gray background */
+                font-size: 10pt;
+                padding: 4px;
+                color: black !important; /* Ensure header text prints black */
             }
              /* Hide non-essential elements during print */
              #main-container > *:not(#bingo-cards-output) {
@@ -163,37 +185,23 @@
         }
     </style>
 </head>
-<body class="p-6 md:p-10">
-
-    <div id="main-container" class="max-w-4xl mx-auto bg-white p-6 md:p-8 rounded-lg shadow-md">
-
-        <h1 class="text-2xl md:text-3xl font-bold mb-6 text-center text-gray-800">Music Bingo Card Generator</h1>
-
-        <div id="input-section" class="mb-6 p-4 border border-gray-200 rounded-lg bg-gray-50">
-            <h2 class="text-xl font-semibold mb-4 text-gray-700">1. Add Songs</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 pb-4 border-b border-gray-200">
-                <div>
-                    <label for="song-title" class="block text-sm font-medium text-gray-600 mb-1">Song Title:</label>
-                    <input type="text" id="song-title" placeholder="e.g., Sweet Home Alabama" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+<body class="p-6 md:p-10 bg-slate-100"> <div id="main-container" class="max-w-4xl mx-auto bg-white p-6 md:p-8 rounded-lg shadow-lg"> <h1 class="text-3xl md:text-4xl font-bold mb-8 text-center text-indigo-700">Music Bingo Card Generator</h1> <div id="input-section" class="mb-6 p-4 border border-indigo-200 rounded-lg bg-indigo-50"> <h2 class="text-xl font-semibold mb-4 text-indigo-800">1. Add Songs</h2> <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 pb-4 border-b border-indigo-100"> <div>
+                    <label for="song-title" class="block text-sm font-medium text-gray-700 mb-1">Song Title:</label> <input type="text" id="song-title" placeholder="e.g., Sweet Home Alabama" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
                 </div>
                 <div>
-                    <label for="song-artist" class="block text-sm font-medium text-gray-600 mb-1">Artist:</label>
-                    <input type="text" id="song-artist" placeholder="e.g., Lynyrd Skynyrd" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                    <label for="song-artist" class="block text-sm font-medium text-gray-700 mb-1">Artist:</label> <input type="text" id="song-artist" placeholder="e.g., Lynyrd Skynyrd" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
                 </div>
                 <div class="flex items-end">
-                    <button id="add-song-btn" class="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out">
+                    <button id="add-song-btn" class="w-full md:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-md shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out">
                         Add Song
                     </button>
                 </div>
             </div>
-             <p id="input-error" class="text-red-500 text-sm mt-2 mb-4 hidden"></p>
-             <div class="mt-4">
-                 <h3 class="text-lg font-semibold mb-2 text-gray-700">Or Add Multiple Songs</h3>
-                 <label for="bulk-songs-input" class="block text-sm font-medium text-gray-600 mb-1">
-                     Enter one song per line using the format: <code class="bg-gray-200 px-1 rounded">Song Title - Artist</code>
+             <p id="input-error" class="text-red-600 text-sm mt-2 mb-4 hidden"></p> <div class="mt-4">
+                 <h3 class="text-lg font-semibold mb-2 text-indigo-800">Or Add Multiple Songs</h3> <label for="bulk-songs-input" class="block text-sm font-medium text-gray-700 mb-1"> Enter one song per line using the format: <code class="bg-gray-200 px-1 rounded">Song Title - Artist</code>
                  </label>
                 <textarea id="bulk-songs-input" rows="5" placeholder="Sweet Home Alabama - Lynyrd Skynyrd&#10;Bohemian Rhapsody - Queen&#10;Hotel California - Eagles" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 mb-2"></textarea>
-                <button id="add-bulk-btn" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-md shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition duration-150 ease-in-out">
+                <button id="add-bulk-btn" class="bg-teal-600 hover:bg-teal-700 text-white font-semibold py-2 px-4 rounded-md shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition duration-150 ease-in-out">
                     Add Songs from List
                 </button>
                  <p id="bulk-status" class="text-sm text-gray-600 mt-2"></p>
@@ -201,38 +209,31 @@
         </div>
 
         <div id="song-list-section" class="mb-6">
-            <h3 class="text-lg font-semibold mb-2 text-gray-700">2. Check Song List (<span id="song-count">0</span> / 25 minimum)</h3>
-            <ul id="song-list" class="list-none list-inside max-h-60 overflow-y-auto border border-gray-200 rounded-md p-3 bg-white text-sm text-gray-600">
+            <h3 class="text-lg font-semibold mb-2 text-gray-700">2. Check Song List (<span id="song-count">0</span> / 25 minimum)</h3> <ul id="song-list" class="list-none list-inside max-h-60 overflow-y-auto border border-gray-300 rounded-md p-3 bg-white text-sm text-gray-600">
                 <div id="no-songs-message">No songs added yet.</div>
             </ul>
-             <p id="list-error" class="text-red-500 text-sm mt-2 hidden">You need at least 25 songs to generate cards.</p>
-        </div>
+             <p id="list-error" class="text-red-600 text-sm mt-2 hidden"></p> </div>
 
-        <div id="action-buttons" class="mb-6 p-4 border border-gray-200 rounded-lg bg-gray-50">
-             <h2 class="text-xl font-semibold mb-4 text-gray-700">3. Generate & Print Cards</h2>
-             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <div id="action-buttons" class="mb-6 p-4 border border-teal-200 rounded-lg bg-teal-50"> <h2 class="text-xl font-semibold mb-4 text-teal-800">3. Generate & Print Cards</h2> <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                  <div>
-                     <label for="custom-title-input" class="block text-sm font-medium text-gray-600 mb-1">Card Title (Optional):</label>
-                     <input type="text" id="custom-title-input" placeholder="Music Bingo" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                     <label for="custom-title-input" class="block text-sm font-medium text-gray-700 mb-1">Card Title (Optional):</label> <input type="text" id="custom-title-input" placeholder="Music Bingo" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
                  </div>
                  <div>
-                     <label for="card-count-input" class="block text-sm font-medium text-gray-600 mb-1">Number of Cards:</label>
-                     <input type="number" id="card-count-input" value="1" min="1" class="w-full md:w-24 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                     <label for="card-count-input" class="block text-sm font-medium text-gray-700 mb-1">Number of Cards:</label> <input type="number" id="card-count-input" value="1" min="1" class="w-full md:w-24 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
                  </div>
              </div>
              <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mt-4">
-                 <button id="generate-cards-btn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-md shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-150 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                 <button id="generate-cards-btn" class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-2 px-6 rounded-md shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 transition duration-150 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed" disabled>
                     Generate Bingo Cards
                 </button>
-                <button id="print-cards-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-md shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out hidden">
+                 <button id="print-cards-btn" class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-6 rounded-md shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition duration-150 ease-in-out hidden">
                     Print Cards
                 </button>
                  <button id="reset-btn" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-md shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 transition duration-150 ease-in-out">
                     Reset All
                 </button>
             </div>
-             <p id="generate-error" class="text-red-500 text-sm mt-2 text-center hidden"></p>
-        </div>
+             <p id="generate-error" class="text-red-600 text-sm mt-2 text-center hidden"></p> </div>
 
         <div id="bingo-cards-output" class="mt-8">
              <div id="bingo-placeholder" class="p-10 text-center text-gray-500 bg-white border border-gray-200 rounded-lg">
